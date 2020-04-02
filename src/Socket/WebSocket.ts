@@ -1,3 +1,4 @@
+import * as _ from 'lodash';
 import * as axios from 'axios';
 import { Server, Socket } from 'socket.io';
 
@@ -13,7 +14,7 @@ class WebSocket {
             timeout: 1000,
             headers: {
                 'X-Made-By': '@xXAlphaManXx',
-                'User-Agent': 'Covid19daily.Today '
+                'User-Agent': 'Covid19daily.Today'
             }
         });
     }
@@ -66,7 +67,21 @@ class WebSocket {
     }
 
     private async areaUpdate(state: string): Promise<any> {
-        const { data } = await this.api.get('/');
+        const { data: { statewise } } = await this.api.get('/');
+        const dataForState = _.find(statewise, obj => obj.state === state);
+
+        this.sendMessage(`
+            <ul>
+                <li><b>Total</b> Active Cases: ${dataForState.active}</li>
+                <li><b>Total</b> Confirmed Cases: ${dataForState.confirmed}</li>
+                <li><b>Total</b> Deaths: ${dataForState.deaths}</li>
+                <li><b>Total</b> Recovered: ${dataForState.recovered}</li>
+                <li><b>Today's</b> Active Cases: ${dataForState.delta.active}</li>
+                <li><b>Today's</b> Confirmed Cases: ${dataForState.delta.confirmed}</li>
+                <li><b>Today's</b> Deaths: ${dataForState.delta.deaths}</li>
+                <li><b>Today's</b> Recovered: ${dataForState.delta.recovered}</li>
+            </ul>
+        `);
     }
 
     private newsAndUpdates(): void {
@@ -81,8 +96,12 @@ class WebSocket {
 
     }
 
-    private unknownCommand(): void {
-
+    private unknownCommand(): boolean {
+        return this.sendMessage(`
+            Sorry, <br />
+            The messeage you send doesn't have any action tied to it. <br />
+            Try sending a proper action message.
+        `);
     }
 }
 
