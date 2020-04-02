@@ -31,10 +31,10 @@ class WebSocket {
         });
     }
 
-    private handleMessage({ message }: any): void {
-        switch (message) {
+    private handleMessage(response: any): void {
+        switch (response.message) {
             case "1":
-                this.areaUpdate();
+                this.areaUpdate(response.state);
                 break;
             case "2":
                 this.newsAndUpdates();
@@ -65,8 +65,8 @@ class WebSocket {
         `);
     }
 
-    private areaUpdate(): void {
-        //
+    private async areaUpdate(state: string): Promise<any> {
+        const { data } = await this.api.get('/');
     }
 
     private newsAndUpdates(): void {
