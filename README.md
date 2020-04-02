@@ -1,5 +1,7 @@
 # CoBot
 
+![Publisher](https://github.com/smartclash/CoBot/workflows/Publisher/badge.svg)
+
 A chatbot response handler made for https://covid19live.today/. Built using Typescript, Axios and [Socket.io](https://socket.io/)
 
 ## Installation
