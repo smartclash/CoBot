@@ -7,9 +7,9 @@ ENV PORT=3892
 
 RUN npm install && npm run build
 
-WORKDIR /test
+WORKDIR /cobot/test
 RUN npm install &&  npm run build
 
-WORKDIR /..
+WORKDIR /cobot
 
 ENTRYPOINT [ "node", "." ]
